@@ -14,7 +14,6 @@ import (
 
 const dburi = "mongodb://192.168.1.161:27017"
 
-// Create a new fiber instance with custom config
 var config = fiber.Config{
 	// Override default error handler
 	ErrorHandler: func(c *fiber.Ctx, err error) error {
@@ -22,8 +21,6 @@ var config = fiber.Config{
 		return c.JSON(map[string]string{"err": err.Error()})
 	},
 }
-
-// ...
 
 func main() {
 
@@ -40,7 +37,8 @@ func main() {
 
 	app := fiber.New(config)
 	apiv1 := app.Group("/api/v1")
-	apiv1.Get("/user", userHandler.HandelListUsers)
+	apiv1.Get("/user", userHandler.HandleListUsers)
+	apiv1.Post("/user", userHandler.HandlePostUser)
 	apiv1.Get("/user/:id", userHandler.HandelGetUser)
 	app.Listen(*listenAdder)
 
