@@ -15,6 +15,8 @@ type UserStore interface {
 	GetUserByID(context.Context, string) (*types.User, error)
 	GetUsers(context.Context) ([]*types.User, error)
 	InsertUsers(context.Context, *types.User) (*types.User, error)
+	DeleteUser(context.Context, string) error
+	USerUpdate(ctx context.Context, filter bson.M, values types.UpdateUserParams) error
 }
 
 type MongoUserStore struct {
@@ -65,5 +67,35 @@ func (s *MongoUserStore) InsertUsers(ctx context.Context, user *types.User) (*ty
 	user.ID = res.InsertedID.(primitive.ObjectID)
 
 	return user, nil
+
+}
+
+func (s *MongoUserStore) DeleteUser(ctx context.Context, id string) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	//TODO: maybe it's a good idea to handle if we did not delete the user, like log it or smt
+	_, err = s.coll.DeleteOne(ctx, bson.M{"_id": oid})
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func (s *MongoUserStore) USerUpdate(ctx context.Context, filter bson.M, values types.UpdateUserParams) error {
+	update := bson.D{
+		{
+			Key: "$set", Value: values.Tobson(),
+		},
+	}
+
+	_, err := s.coll.UpdateOne(ctx, filter, update)
+	if err != nil {
+		return err
+	}
+
+	return nil
 
 }
