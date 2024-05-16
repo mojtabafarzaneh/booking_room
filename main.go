@@ -12,7 +12,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const dburi = "mongodb://192.168.1.161:27017"
+const (
+	dburi  = "mongodb://192.168.1.161:27017"
+	dbname = "hotel-reservation"
+)
 
 var config = fiber.Config{
 	// Override default error handler
@@ -33,7 +36,7 @@ func main() {
 		log.Fatal(err)
 	}
 	//handler initialization
-	userHandler := api.NewUserHandler(db.NewMongoUserStore(client))
+	userHandler := api.NewUserHandler(db.NewMongoUserStore(client, dbname))
 
 	app := fiber.New(config)
 	apiv1 := app.Group("/api/v1")
