@@ -15,9 +15,9 @@ type UserHandler struct {
 	userStore db.UserStore
 }
 
-func NewUserHandler(usertore db.UserStore) *UserHandler {
+func NewUserHandler(userStore db.UserStore) *UserHandler {
 	return &UserHandler{
-		userStore: usertore,
+		userStore: userStore,
 	}
 }
 
