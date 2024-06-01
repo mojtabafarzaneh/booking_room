@@ -18,33 +18,30 @@ var (
 	client     *mongo.Client
 )
 
-func seedHotel(name, location string) error {
+func seedHotel(name string, location string, rating int) error {
 	hotel := types.Hotel{
 		Name:     name,
 		Location: location,
 		Rooms:    []primitive.ObjectID{},
+		Rating:   rating,
 	}
 
 	room := []types.Room{
 		{
-			Type:      types.SingleRoomType,
-			BasePrice: 99.9,
+			Size:  "small",
+			Price: 99.9,
 		},
 		{
-			Type:      types.DeluxeRoomtype,
-			BasePrice: 299.9,
+			Size:  "kingSize",
+			Price: 299.9,
 		},
 		{
-			Type:      types.SeasideRoomtype,
-			BasePrice: 199.9,
-		},
-		{
-			Type:      types.DoubleRoomType,
-			BasePrice: 122.9,
+			Size:  "normal",
+			Price: 199.9,
 		},
 	}
 
-	insertedHotel, err := hotelStore.InsertHotel(ctx, &hotel)
+	insertedHotel, err := hotelStore.Insert(ctx, &hotel)
 
 	if err != nil {
 		log.Fatal(err)
@@ -62,10 +59,9 @@ func seedHotel(name, location string) error {
 }
 
 func main() {
-	seedHotel("grandhotel", "rasht")
-	seedHotel("hilton", "tehran")
-	seedHotel("abbasi", "isfahan")
-	seedHotel("the grand budapest hotel", "budapest")
+	seedHotel("grandhotel", "rasht", 3)
+	seedHotel("hilton", "tehran", 4)
+	seedHotel("abbasi", "isfahan", 5)
 
 }
 
