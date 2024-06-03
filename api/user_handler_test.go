@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"log"
 	"net/http/httptest"
 	"testing"
 
@@ -30,7 +29,7 @@ func setup(t *testing.T) *testdb {
 	client, err := mongo.Connect(context.TODO(), options.Client().
 		ApplyURI(db.DBURI))
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 	return &testdb{
 		store: db.Store{
