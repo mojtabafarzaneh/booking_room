@@ -6,23 +6,36 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/mojtabafarzaneh/hotel_reservation/db"
 )
 
-func JWTAuthentication(ctx *fiber.Ctx) error {
-	token, ok := ctx.GetReqHeaders()["X-Api-Token"]
-	if !ok {
-		return fmt.Errorf("unauthorized")
-	}
-	_, err := parseJWTToken(token[0])
+func JWTAuthentication(userStore db.UserStore) fiber.Handler {
+	return func(ctx *fiber.Ctx) error {
+		token, ok := ctx.GetReqHeaders()["X-Api-Token"]
+		if !ok {
+			return fmt.Errorf("unauthorized")
+		}
+		_, err := validatedToken(token[0])
 
-	if err != nil {
-		return err
-	}
+		if err != nil {
+			return err
+		}
+		claims, err := validatedToken(token[0])
+		if err != nil {
+			return fmt.Errorf("unauthorized")
+		}
+		userID := claims["id"].(string)
+		user, err := userStore.GetUserByID(ctx.Context(), userID)
+		if err != nil {
+			return fmt.Errorf("unauthorized")
+		}
+		ctx.Context().SetUserValue("user", user)
 
-	return ctx.Next()
+		return ctx.Next()
+	}
 }
 
-func parseJWTToken(tokenString string) (jwt.MapClaims, error) {
+func validatedToken(tokenString string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
