@@ -5,7 +5,6 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/mojtabafarzaneh/hotel_reservation/db"
-	"github.com/mojtabafarzaneh/hotel_reservation/types"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -20,7 +19,6 @@ func NewBookingStore(store db.Store) *BookingHandler {
 
 }
 
-// TODO: only authorized admins can view this page
 func (h *BookingHandler) HandelGetBookings(c *fiber.Ctx) error {
 	booking, err := h.store.Booking.GetBookings(c.Context(), bson.M{})
 	if err != nil {
@@ -36,8 +34,8 @@ func (h *BookingHandler) HandleGetBooking(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	user, ok := c.Context().UserValue("user").(*types.User)
-	if !ok {
+	user, err := getAuthUser(c)
+	if err != nil {
 		return err
 	}
 	if booking.UserID != user.ID {
@@ -47,4 +45,31 @@ func (h *BookingHandler) HandleGetBooking(c *fiber.Ctx) error {
 		})
 	}
 	return c.JSON(booking)
+}
+
+func (h *BookingHandler) HandleCancelBooking(c *fiber.Ctx) error {
+	id := c.Params("id")
+	booking, err := h.store.Booking.GetBookingByID(c.Context(), id)
+	if err != nil {
+		return err
+	}
+
+	user, err := getAuthUser(c)
+	if err != nil {
+		return err
+	}
+	if booking.UserID != user.ID {
+		return c.Status(http.StatusUnauthorized).JSON(genericResp{
+			Type: "error",
+			Msg:  "unauthorized user",
+		})
+	}
+
+	if err = h.store.Booking.UpdateBooking(c.Context(), c.Params("id"), bson.M{"canceled": true}); err != nil {
+		return err
+	}
+	return c.JSON(genericResp{
+		Type: "msg",
+		Msg:  "Ok!",
+	})
 }

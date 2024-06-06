@@ -19,7 +19,7 @@ func NewHotelHandler(store db.Store) *HotelHandler {
 
 func (h *HotelHandler) HandelGetHotels(c *fiber.Ctx) error {
 
-	hotels, err := h.store.Hotels.GetHotels(c.Context(), nil)
+	hotels, err := h.store.Hotels.GetHotels(c.Context(), bson.M{})
 	if err != nil {
 		return err
 	}

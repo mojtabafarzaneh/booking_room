@@ -64,7 +64,7 @@ func main() {
 	apiv1.Delete("/user/:id", userHandler.HandleDeleteUser)
 
 	//hotel handlers
-	apiv1.Get("/hotels", hotelHandler.HandelGetHotel)
+	apiv1.Get("/hotels", hotelHandler.HandelGetHotels)
 	apiv1.Get("/hotel/:id/room", hotelHandler.HandelGetRooms)
 	apiv1.Get("/hotel/:id/", hotelHandler.HandelGetHotel)
 
@@ -75,6 +75,7 @@ func main() {
 	//booking handlers
 	admin.Get("/bookings", bookingHandler.HandelGetBookings)
 	apiv1.Get("/bookings/:id", bookingHandler.HandleGetBooking)
+	apiv1.Get("/bookings/:id/cancele", bookingHandler.HandleCancelBooking)
 
 	app.Listen(*listenAdder)
 
