@@ -14,7 +14,7 @@ func TestPostUser(t *testing.T) {
 	tdb := setup(t)
 	defer tdb.teardrop(t)
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{ErrorHandler: ErrorHandler})
 	userHandler := NewUserHandler(*tdb.Store)
 	app.Post("/", userHandler.HandlePostUser)
 

@@ -1,4 +1,4 @@
-package middleware
+package api
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ func JWTAuthentication(userStore db.UserStore) fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		token, ok := ctx.GetReqHeaders()["X-Api-Token"]
 		if !ok {
-			return fmt.Errorf("you have to be authenticated")
+			return ErrUnAuthorized()
 		}
 		_, err := validatedToken(token[0])
 
@@ -22,8 +22,9 @@ func JWTAuthentication(userStore db.UserStore) fiber.Handler {
 		}
 		claims, err := validatedToken(token[0])
 		if err != nil {
-			return fmt.Errorf("you have to be authenticated")
+			return ErrUnAuthorized()
 		}
+
 		userID := claims["id"].(string)
 		user, err := userStore.GetUserByID(ctx.Context(), userID)
 		if err != nil {
@@ -39,7 +40,7 @@ func validatedToken(tokenString string) (jwt.MapClaims, error) {
 		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			fmt.Println("invalid signature method", token.Header["alg"])
-			return nil, fmt.Errorf("you have to be authenticated")
+			return nil, ErrUnAuthorized()
 		}
 
 		secret := os.Getenv("JWT_SECRET")
@@ -48,7 +49,7 @@ func validatedToken(tokenString string) (jwt.MapClaims, error) {
 	})
 	if err != nil {
 		fmt.Println("failed to parse JWT token:", err)
-		return nil, fmt.Errorf("you have to be authenticated")
+		return nil, ErrUnAuthorized()
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)

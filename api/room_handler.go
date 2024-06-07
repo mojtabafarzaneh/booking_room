@@ -48,7 +48,7 @@ func (h *RoomHandler) HandleGetRooms(c *fiber.Ctx) error {
 func (h *RoomHandler) BookingRoomHandler(c *fiber.Ctx) error {
 	var prams BookingRoomParams
 	if err := c.BodyParser(&prams); err != nil {
-		return err
+		return ErrBadRequest()
 	}
 
 	if err := prams.validate(); err != nil {
@@ -57,7 +57,7 @@ func (h *RoomHandler) BookingRoomHandler(c *fiber.Ctx) error {
 
 	roomID, err := primitive.ObjectIDFromHex(c.Params("id"))
 	if err != nil {
-		return err
+		return ErrResourceNotFound("roomID")
 	}
 
 	user, ok := c.Context().Value("user").(*types.User)
@@ -107,7 +107,7 @@ func (h *RoomHandler) isRoomAvialable(ctx context.Context, roomID primitive.Obje
 
 	bookings, err := h.store.Booking.GetBookings(ctx, where)
 	if err != nil {
-		return false, err
+		return false, ErrResourceNotFound("bookings")
 	}
 	ok := len(bookings) == 0
 	return ok, nil

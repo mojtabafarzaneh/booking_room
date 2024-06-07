@@ -7,7 +7,6 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/mojtabafarzaneh/hotel_reservation/api"
-	"github.com/mojtabafarzaneh/hotel_reservation/api/middleware"
 	"github.com/mojtabafarzaneh/hotel_reservation/db"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -15,10 +14,7 @@ import (
 
 var config = fiber.Config{
 	// Override default error handler
-	ErrorHandler: func(c *fiber.Ctx, err error) error {
-
-		return c.JSON(map[string]string{"err": err.Error()})
-	},
+	ErrorHandler: api.ErrorHandler,
 }
 
 func main() {
@@ -50,8 +46,8 @@ func main() {
 
 	app := fiber.New(config)
 	auth := app.Group("/api")
-	apiv1 := app.Group("/api/v1", middleware.JWTAuthentication(userStore))
-	admin := apiv1.Group("/admin", middleware.AdminAuth)
+	apiv1 := app.Group("/api/v1", api.JWTAuthentication(userStore))
+	admin := apiv1.Group("/admin", api.AdminAuth)
 
 	//auth handler
 	auth.Post("/auth", authHandler.HandleAuthentication)
@@ -64,7 +60,7 @@ func main() {
 	apiv1.Delete("/user/:id", userHandler.HandleDeleteUser)
 
 	//hotel handlers
-	apiv1.Get("/hotels", hotelHandler.HandelGetHotels)
+	apiv1.Get("/hotel", hotelHandler.HandelGetHotels)
 	apiv1.Get("/hotel/:id/room", hotelHandler.HandelGetRooms)
 	apiv1.Get("/hotel/:id/", hotelHandler.HandelGetHotel)
 
