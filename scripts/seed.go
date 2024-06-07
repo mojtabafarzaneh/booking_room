@@ -13,12 +13,18 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var (
-	ctx    = context.Background()
-	client *mongo.Client
-)
-
 func main() {
+	var err error
+	ctx := context.Background()
+	client, err := mongo.Connect(ctx, options.Client().
+		ApplyURI(db.DBURI))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := client.Database(db.DBNAME).Drop(ctx); err != nil {
+		log.Fatal(err)
+	}
 	hotelStore := db.NewMongoHotelStore(client)
 	store := &db.Store{
 		Hotels:  hotelStore,
@@ -34,18 +40,4 @@ func main() {
 	room := fixtures.AddRoom(store, hotel.ID, 123.22, "small", false)
 	booking := fixtures.AddBooking(store, room.ID, user.ID, 88, time.Now(), time.Now().AddDate(0, 0, 6))
 	fmt.Println("booking ->", booking.ID)
-}
-
-func init() {
-	var err error
-	client, err = mongo.Connect(context.TODO(), options.Client().
-		ApplyURI(db.DBURI))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if err := client.Database(db.DBNAME).Drop(ctx); err != nil {
-		log.Fatal(err)
-	}
-
 }

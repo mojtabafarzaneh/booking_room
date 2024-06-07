@@ -36,10 +36,10 @@ func insertTestUser(t *testing.T, userStore db.UserStore) *types.User {
 func TestAuthenticationSuccess(t *testing.T) {
 	tdb := setup(t)
 	defer tdb.teardrop(t)
-	insertedUser := insertTestUser(t, tdb.store.User)
+	insertedUser := insertTestUser(t, tdb.Store.User)
 
 	app := fiber.New()
-	AuthHandler := NewAuthHnadler(tdb.store.User)
+	AuthHandler := NewAuthHnadler(tdb.Store.User)
 	app.Post("/", AuthHandler.HandleAuthentication)
 
 	params := AuthParams{

@@ -25,7 +25,6 @@ type UserStore interface {
 	DeleteUser(context.Context, string) error
 	USerUpdate(ctx context.Context, filter bson.M, values types.UpdateUserParams) error
 }
-
 type MongoUserStore struct {
 	client *mongo.Client
 	coll   *mongo.Collection

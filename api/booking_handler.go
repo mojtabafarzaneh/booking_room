@@ -12,7 +12,7 @@ type BookingHandler struct {
 	store db.Store
 }
 
-func NewBookingStore(store db.Store) *BookingHandler {
+func NewBookingHandler(store db.Store) *BookingHandler {
 	return &BookingHandler{
 		store: store,
 	}
