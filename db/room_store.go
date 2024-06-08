@@ -25,7 +25,7 @@ type MongoRoomStore struct {
 func NewMongoRoomStore(client *mongo.Client, hotelStore HotelStore) *MongoRoomStore {
 	return &MongoRoomStore{
 		client:     client,
-		coll:       client.Database(DBNAME).Collection("rooms"),
+		coll:       client.Database(MongoDBNameEnvName).Collection("rooms"),
 		HotelStore: hotelStore,
 	}
 }
