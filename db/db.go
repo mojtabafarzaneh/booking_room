@@ -1,6 +1,6 @@
 package db
 
-const MongoDBNameEnvName = "MONGO_DB_NAME"
+const MongoDBNameEnvName = "booking-room"
 
 type Pagination struct {
 	Limit int64

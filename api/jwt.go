@@ -6,7 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/mojtabafarzaneh/hotel_reservation/db"
+	"github.com/mojtabafarzaneh/booking_room/db"
 )
 
 func JWTAuthentication(userStore db.UserStore) fiber.Handler {

@@ -3,7 +3,7 @@ package db
 import (
 	"context"
 
-	"github.com/mojtabafarzaneh/hotel_reservation/types"
+	"github.com/mojtabafarzaneh/booking_room/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

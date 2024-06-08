@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
-	"github.com/mojtabafarzaneh/hotel_reservation/api"
-	"github.com/mojtabafarzaneh/hotel_reservation/db"
-	"github.com/mojtabafarzaneh/hotel_reservation/db/fixtures"
+	"github.com/mojtabafarzaneh/booking_room/api"
+	"github.com/mojtabafarzaneh/booking_room/db"
+	"github.com/mojtabafarzaneh/booking_room/db/fixtures"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

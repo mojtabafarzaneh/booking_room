@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/mojtabafarzaneh/hotel_reservation/db"
-	"github.com/mojtabafarzaneh/hotel_reservation/types"
+	"github.com/mojtabafarzaneh/booking_room/db"
+	"github.com/mojtabafarzaneh/booking_room/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

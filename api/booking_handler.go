@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/mojtabafarzaneh/hotel_reservation/db"
+	"github.com/mojtabafarzaneh/booking_room/db"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

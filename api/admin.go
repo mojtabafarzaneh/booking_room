@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/mojtabafarzaneh/hotel_reservation/types"
+	"github.com/mojtabafarzaneh/booking_room/types"
 )
 
 func AdminAuth(c *fiber.Ctx) error {

@@ -11,8 +11,8 @@ import (
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/mojtabafarzaneh/hotel_reservation/db"
-	"github.com/mojtabafarzaneh/hotel_reservation/types"
+	"github.com/mojtabafarzaneh/booking_room/db"
+	"github.com/mojtabafarzaneh/booking_room/types"
 )
 
 func insertTestUser(t *testing.T, userStore db.UserStore) *types.User {

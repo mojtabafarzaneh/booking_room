@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/mojtabafarzaneh/hotel_reservation/db/fixtures"
-	"github.com/mojtabafarzaneh/hotel_reservation/types"
+	"github.com/mojtabafarzaneh/booking_room/db/fixtures"
+	"github.com/mojtabafarzaneh/booking_room/types"
 )
 
 func TestGetBooking(t *testing.T) {

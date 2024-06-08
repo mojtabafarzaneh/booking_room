@@ -1,4 +1,4 @@
-module github.com/mojtabafarzaneh/hotel_reservation
+module github.com/mojtabafarzaneh/booking_room
 
 go 1.22.3
 
