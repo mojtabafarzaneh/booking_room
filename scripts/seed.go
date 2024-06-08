@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"time"
 
 	"github.com/mojtabafarzaneh/hotel_reservation/api"
@@ -40,4 +41,10 @@ func main() {
 	room := fixtures.AddRoom(store, hotel.ID, 123.22, "small", false)
 	booking := fixtures.AddBooking(store, room.ID, user.ID, 88, time.Now(), time.Now().AddDate(0, 0, 6))
 	fmt.Println("booking ->", booking.ID)
+
+	for i := 0; i < 100; i++ {
+		name := fmt.Sprintf("random hotel name %d", i)
+		location := fmt.Sprintf("random hotel location %d", i)
+		fixtures.AddHotel(store, name, location, rand.Intn(5)+1, nil)
+	}
 }

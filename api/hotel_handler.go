@@ -17,13 +17,38 @@ func NewHotelHandler(store db.Store) *HotelHandler {
 	}
 }
 
-func (h *HotelHandler) HandelGetHotels(c *fiber.Ctx) error {
+type ResourceResp struct {
+	Data   any `json:"data"`
+	Result int `json:"result"`
+	Page   int `json:"page"`
+}
 
-	hotels, err := h.store.Hotels.GetHotels(c.Context(), bson.M{})
+type HotelQueryParams struct {
+	db.Pagination
+	Rating int
+}
+
+func (h *HotelHandler) HandelGetHotels(c *fiber.Ctx) error {
+	var params HotelQueryParams
+	if err := c.QueryParser(&params); err != nil {
+		return ErrBadRequest()
+	}
+
+	filter := db.Map{
+		"rating": params.Rating,
+	}
+
+	hotels, err := h.store.Hotels.GetHotels(c.Context(), filter, &params.Pagination)
 	if err != nil {
 		return err
 	}
-	return c.JSON(hotels)
+
+	resp := ResourceResp{
+		Page:   int(params.Page),
+		Result: int(params.Limit),
+		Data:   hotels,
+	}
+	return c.JSON(resp)
 }
 
 func (h *HotelHandler) HandelGetRooms(c *fiber.Ctx) error {
