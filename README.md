@@ -1,4 +1,4 @@
-# Hotel reservation backend
+# Booking hotel rooms backend
 
 # Project environment variables
 ```
